@@ -68,8 +68,7 @@ const MyPreset = definePreset(Aura, {
             900: '{ruby.900}',
             950: '{ruby.950}'
         }
-    },
-    
+    },    
 });
 
 export default MyPreset;

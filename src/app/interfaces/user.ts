@@ -16,3 +16,5 @@ export interface User {
     orders: Order[],
     products: Product[]
 }
+
+export type userRegister = Omit<User, 'id' | 'role' | 'orders' | 'products'>;

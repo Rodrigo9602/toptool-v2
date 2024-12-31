@@ -1,1 +1,258 @@
-<p>register works!</p>
+<main class="w-full h-screen flex items-center justify-center">
+  <section
+    class="w-[90%] h-[560px] max-w-max py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-between gap-10 shadow-md"
+  >
+    <header
+      #title
+      class="w-full flex flex-col items-start justify-center gap-2"
+    >
+      <h1 class="font-poppins font-bold text-xl leading-6">
+        <span><i class="pi pi-check-circle"></i></span>
+        Crea tu cuenta
+      </h1>
+    </header>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="w-full flex flex-col items-center justify-center gap-4"
+    >
+      <div class="card flex justify-center w-full">
+        <p-stepper
+          [value]="currentStep"
+          [linear]="true"
+          (activeStepChange)="onStepChange($event)"
+          class="w-full"
+          [style]="{ width: '100%' }"
+        >
+          <p-step-list>
+            <p-step [value]="1">Datos de usuario</p-step>
+            <p-step [value]="2">Datos de la cuenta</p-step>
+            <p-step [value]="3">Información adicional</p-step>
+          </p-step-list>
+          <p-step-panels>
+            <!--First Step-->
+            <p-step-panel [value]="1">
+              <ng-template #content let-activateCallback="activateCallback">
+                <div class="w-full flex flex-col items-center justify-center">
+                  <div
+                    class="w-full md:w-[80%] bg-surface-50 flex-auto flex flex-col justify-center items-center gap-4 font-medium"
+                  >
+                    <p-floatlabel variant="on" class="w-full">
+                      <input
+                        pInputText
+                        id="user_name"
+                        type="text"
+                        autocomplete="on"
+                        class="w-full"
+                        formControlName="userName"
+                      />
+                      <label for="user_name">nombre</label>
+                    </p-floatlabel>
+
+                    <p-floatlabel variant="on" class="w-full">
+                      <input
+                        pInputText
+                        id="user_lastname"
+                        type="text"
+                        autocomplete="on"
+                        class="w-full"
+                        formControlName="userLastName"
+                      />
+                      <label for="user_lastname">apellidos</label>
+                    </p-floatlabel>
+                  </div>
+                  <div
+                    class="w-full md:w-[80%] flex flex-col pt-6 items-center justify-center"
+                  >
+                    <p-button
+                      label="Siguiente"
+                      class="w-full font-poppins"
+                      styleClass="w-full"
+                      (onClick)="activateCallback(2)"
+                      [disabled]="!isStepValid(1)"
+                    />
+                  </div>
+                </div>
+              </ng-template>
+            </p-step-panel>
+
+            <!--Second step-->
+            <p-step-panel [value]="2">
+              <ng-template #content let-activateCallback="activateCallback">
+                <div class="w-full flex flex-col items-center justify-center">
+                  <div
+                    class="w-full md:w-[80%] bg-surface-50 flex-auto flex flex-col justify-center items-center gap-4 font-medium"
+                  >
+                    <p-floatlabel variant="on" class="w-full">
+                      <input
+                        pInputText
+                        id="user_email"
+                        type="email"
+                        autocomplete="on"
+                        class="w-full"
+                        formControlName="userEmail"
+                      />
+                      <label for="user_email">email</label>
+                    </p-floatlabel>
+
+                    <p-floatlabel variant="on" class="w-full">
+                      <p-password
+                        id="user_pass"
+                        [toggleMask]="true"
+                        autocomplete="on"
+                        formControlName="userPassword"
+                        styleClass="w-full"
+                        [inputStyle]="{ width: '100%' }"
+                      >
+                        <ng-template #header>
+                          <div class="font-semibold text-xm mb-4">
+                            Introduce una contraseña
+                          </div>
+                        </ng-template>
+                      </p-password>
+                      <label for="user_pass">contraseña</label>
+                    </p-floatlabel>
+
+                    <p-floatlabel variant="on" class="w-full">
+                      <p-password
+                        id="user_pass_confirm"
+                        [toggleMask]="true"
+                        autocomplete="on"
+                        formControlName="userPasswordConfirm"
+                        styleClass="w-full"
+                        [inputStyle]="{ width: '100%' }"
+                      >
+                        <ng-template #header>
+                          <div class="font-semibold text-xm mb-4">
+                            Confirma tu contraseña
+                          </div>
+                        </ng-template>
+                      </p-password>
+                      <label for="user_pass_confirm"
+                        >confirma tu contraseña</label
+                      >
+                    </p-floatlabel>
+                  </div>
+
+                  <div
+                    class="w-full md:w-[80%] flex flex-col pt-6 items-center justify-center gap-2"
+                  >
+                    <p-button
+                      label="Anterior"
+                      severity="secondary"
+                      class="w-full font-poppins"
+                      styleClass="w-full"
+                      (onClick)="activateCallback(1)"
+                    />
+                    <p-button
+                      label="Siguiente"
+                      class="w-full font-poppins"
+                      styleClass="w-full"
+                      (onClick)="activateCallback(3)"
+                      [disabled]="!isStepValid(2)"
+                    />
+                  </div>
+                </div>
+              </ng-template>
+            </p-step-panel>
+
+            <!--Third step-->
+            <p-step-panel [value]="3">
+              <ng-template #content let-activateCallback="activateCallback">
+                <div class="w-full flex flex-col items-center justify-center">
+                  <div
+                    class="w-full md:w-[80%] bg-surface-50 flex-auto flex justify-center items-center gap-2 font-medium"
+                  >
+                    <p-select
+                      [options]="countries"
+                      formControlName="countryCode"
+                      [filter]="true"
+                      [showClear]="true"
+                      placeholder="Selecciona un país"
+                      [style]="{ width: '60%' }"
+                      optionLabel="name"
+                      [filterFields]="['name']"
+                      styleClass="w-full country-dropdown"
+                      [virtualScroll]="true"
+                      [virtualScrollItemSize]="38"
+                      [loading]="isLoadingCountries"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="
+                            registerForm.get('countryCode')?.value as country
+                          "
+                        >
+                          <img
+                            [src]="country.flag"
+                            class="hidden md:block w-4 h-4"
+                            [alt]="country.name"
+                          />
+                          <div class="flex">
+                            <span class="hidden md:flex">{{
+                              country.name
+                            }}</span>
+                            <span>({{ country.dialCode }})</span>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-country pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <img
+                            [src]="country.flag"
+                            class="w-4 h-4"
+                            [alt]="country.name"
+                          />
+                          <div>{{ country.name }} ({{ country.dialCode }})</div>
+                        </div>
+                      </ng-template>
+                    </p-select>
+                    <p-floatlabel variant="on" class="w-full">
+                      <input
+                        pInputText
+                        id="user_phone"
+                        type="text"
+                        autocomplete="on"
+                        class="w-full"
+                        formControlName="userPhone"
+                      />
+                      <label for="user_phone">teléfono</label>
+                    </p-floatlabel>
+                  </div>
+
+                  <div
+                    class="w-full md:w-[80%] flex flex-col items-center justify-center gap-2 pt-6"
+                  >
+                    <p-button
+                      label="Anterior"
+                      severity="secondary"
+                      class="w-full font-poppins"
+                      styleClass="w-full"
+                      (onClick)="activateCallback(2)"
+                    />
+                    <p-button
+                      label="Crear cuenta"
+                      class="w-full font-poppins"
+                      styleClass="w-full"
+                      type="submit"
+                      [disabled]="!isStepValid(3)"
+                      (onClick)="onSubmit()"
+                    />
+                  </div>
+                </div>
+              </ng-template>
+            </p-step-panel>
+          </p-step-panels>
+        </p-stepper>
+      </div>
+    </form>
+
+    <section>
+      <p class="font-poppins font-normal text-sm leading-normal text-[#64748b]">
+        ¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a>
+      </p>
+    </section>
+  </section>
+</main>

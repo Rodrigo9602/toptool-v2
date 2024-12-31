@@ -1,17 +1,22 @@
 <main class="w-full h-screen flex items-center justify-center">
-  <section class="w-[90%] max-w-[25rem] py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-center gap-10 shadow-md">
-    <header #title class="w-full flex flex-col items-start justify-center gap-2">
-      <h1 class="font-poppins font-bold text-xl leading-6">  
+  <section
+    class="w-[90%] max-w-[25rem] py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-center gap-10 shadow-md"
+  >
+    <header
+      #title
+      class="w-full flex flex-col items-start justify-center gap-2"
+    >
+      <h1 class="font-poppins font-bold text-xl leading-6">
         <span>
-            <i class="pi pi-check-circle"></i>
-        </span>     
+          <i class="pi pi-check-circle"></i>
+        </span>
         Inicia sesión en tu cuenta
       </h1>
       <p class="font-poppins font-normal text-sm leading-normal text-[#64748b]">
         El acceso a nuestros servicios está limitado para usuarios dentro de la
         plataforma
       </p>
-    </header>    
+    </header>
 
     <form
       [formGroup]="loginForm"
@@ -19,26 +24,58 @@
       class="w-full flex flex-col items-center justify-center gap-4"
     >
       <p-floatlabel variant="on" class="w-full">
-        <input pInputText id="user_email" type="email" autocomplete="on" class="w-full" formControlName="userEmail"/>
+        <input
+          pInputText
+          id="user_email"
+          type="email"
+          autocomplete="on"
+          class="w-full"
+          formControlName="userEmail"
+        />
         <label for="user_email">email</label>
       </p-floatlabel>
 
-
       <p-floatlabel variant="on" class="w-full">
-        <p-password id="user_pass" [toggleMask]="true" autocomplete="on" formControlName="userPassword" >
-            <ng-template #header>
-                <div class="font-semibold text-xm mb-4">Introduce una contraseña</div>
-            </ng-template>            
+        <p-password
+          id="user_pass"
+          [toggleMask]="true"
+          autocomplete="on"
+          formControlName="userPassword"
+          styleClass="w-full"
+          [inputStyle]="{ width: '100%' }"
+        >
+          <ng-template #header>
+            <div class="font-semibold text-xm mb-4">
+              Introduce una contraseña
+            </div>
+          </ng-template>
         </p-password>
         <label for="user_pass">contraseña</label>
       </p-floatlabel>
 
+      <section>
+        <p class="font-poppins font-normal text-sm leading-normal text-[#64748b]">
+          <a routerLink="/recover">¿Olvidaste tu contraseña?</a>
+        </p>
+      </section>
     </form>
 
     <section #footer class="w-full">
-      <div class="flex gap-4 mt-1">        
-        <p-button label="Iniciar" class="w-full font-poppins" styleClass="w-full" type="submit" (onClick)="onSubmit()"/>
+      <div class="flex gap-4 mt-1">
+        <p-button
+          label="Iniciar"          
+          class="w-full font-poppins"
+          styleClass="w-full"
+          type="submit"
+          (onClick)="onSubmit()"
+        />
       </div>
     </section>
-</section>
+
+    <section>
+      <p class="font-poppins font-normal text-sm leading-normal text-[#64748b]">
+        ¿No tienes una cuenta? <a routerLink="/register">Regístrate</a>
+      </p>
+    </section>
+  </section>
 </main>

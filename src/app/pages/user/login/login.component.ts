@@ -4,11 +4,11 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { FloatLabel } from 'primeng/floatlabel';
-import { DividerModule } from 'primeng/divider';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [ ReactiveFormsModule, ButtonModule, InputTextModule, PasswordModule, FloatLabel, DividerModule],
+  imports: [ ReactiveFormsModule, RouterModule, ButtonModule, InputTextModule, PasswordModule, FloatLabel],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
