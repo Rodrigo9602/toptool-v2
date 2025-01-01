@@ -10,6 +10,10 @@
         <span><i class="pi pi-check-circle"></i></span>
         Crea tu cuenta
       </h1>
+      <p class="font-poppins font-normal text-sm leading-normal text-[#64748b]">
+        El acceso a nuestros servicios está limitado para usuarios dentro de la
+        plataforma
+      </p>
     </header>
 
     <form
@@ -21,15 +25,17 @@
         <p-stepper
           [value]="currentStep"
           [linear]="true"
-          (activeStepChange)="onStepChange($event)"
-          class="w-full"
+          class="basis-[50rem]"              
           [style]="{ width: '100%' }"
         >
-          <p-step-list>
-            <p-step [value]="1">Datos de usuario</p-step>
-            <p-step [value]="2">Datos de la cuenta</p-step>
-            <p-step [value]="3">Información adicional</p-step>
-          </p-step-list>
+          <div class="w-full flex items-center justify-center">
+            <p-step-list>
+              <p-step [value]="1">Datos de usuario</p-step>
+              <p-step [value]="2">Datos de la cuenta</p-step>
+              <p-step [value]="3">Información adicional</p-step>
+            </p-step-list>
+          </div>
+
           <p-step-panels>
             <!--First Step-->
             <p-step-panel [value]="1">
@@ -47,7 +53,7 @@
                         class="w-full"
                         formControlName="userName"
                       />
-                      <label for="user_name">nombre</label>
+                      <label for="user_name">nombre*</label>
                     </p-floatlabel>
 
                     <p-floatlabel variant="on" class="w-full">
@@ -59,15 +65,15 @@
                         class="w-full"
                         formControlName="userLastName"
                       />
-                      <label for="user_lastname">apellidos</label>
+                      <label for="user_lastname">apellidos*</label>
                     </p-floatlabel>
                   </div>
                   <div
                     class="w-full md:w-[80%] flex flex-col pt-6 items-center justify-center"
                   >
                     <p-button
-                      label="Siguiente"
-                      class="w-full font-poppins"
+                      label="Siguiente"                     
+                      class="w-full font-poppins bg-surface-500"
                       styleClass="w-full"
                       (onClick)="activateCallback(2)"
                       [disabled]="!isStepValid(1)"
@@ -93,7 +99,7 @@
                         class="w-full"
                         formControlName="userEmail"
                       />
-                      <label for="user_email">email</label>
+                      <label for="user_email">email*</label>
                     </p-floatlabel>
 
                     <p-floatlabel variant="on" class="w-full">
@@ -111,7 +117,7 @@
                           </div>
                         </ng-template>
                       </p-password>
-                      <label for="user_pass">contraseña</label>
+                      <label for="user_pass">contraseña*</label>
                     </p-floatlabel>
 
                     <p-floatlabel variant="on" class="w-full">
@@ -130,7 +136,7 @@
                         </ng-template>
                       </p-password>
                       <label for="user_pass_confirm"
-                        >confirma tu contraseña</label
+                        >confirma tu contraseña*</label
                       >
                     </p-floatlabel>
                   </div>
@@ -169,7 +175,7 @@
                       formControlName="countryCode"
                       [filter]="true"
                       [showClear]="true"
-                      placeholder="Selecciona un país"
+                      placeholder="Selecciona un país*"
                       [style]="{ width: '60%' }"
                       optionLabel="name"
                       [filterFields]="['name']"
@@ -187,7 +193,7 @@
                         >
                           <img
                             [src]="country.flag"
-                            class="hidden md:block w-4 h-4"
+                            class="hidden md:block w-4 h-4 mt-1"
                             [alt]="country.name"
                           />
                           <div class="flex">
@@ -218,7 +224,7 @@
                         class="w-full"
                         formControlName="userPhone"
                       />
-                      <label for="user_phone">teléfono</label>
+                      <label for="user_phone">teléfono*</label>
                     </p-floatlabel>
                   </div>
 
@@ -237,8 +243,7 @@
                       class="w-full font-poppins"
                       styleClass="w-full"
                       type="submit"
-                      [disabled]="!isStepValid(3)"
-                      (onClick)="onSubmit()"
+                      [disabled]="!isStepValid(3)"                      
                     />
                   </div>
                 </div>

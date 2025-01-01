@@ -29,18 +29,19 @@ import { userRegister } from '../../../interfaces/user';
     InputTextModule,
     PasswordModule,
     FloatLabel,
-    StepperModule,
+    StepperModule,    
     SelectModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
-  public currentStep = 1;
+  public currentStep:number = 1;
   public countries: Country[] = [];
   public filteredCountries: Country[] = [];
   public isLoadingCountries = true;
-  public loadingError = false;
+  public loadingError = false; 
+
 
   public registerForm = new FormGroup({
     userName: new FormControl('', [
@@ -71,9 +72,7 @@ export class RegisterComponent implements OnInit {
       Validators.pattern(/^[0-9]+$/),
     ]),
     countryCode: new FormControl<Country | null>(null, [Validators.required]),
-    userAddress: new FormControl('', [
-      Validators.required,      
-    ]),
+    userAddress: new FormControl(''),
   });
 
   constructor(private countryService: CountryService) {}
@@ -138,11 +137,12 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  onStepChange(step: any): void {
+  onStepChange(step:number): void {
+    console.log(step)   
     this.currentStep = step;
   }
 
-  onSubmit(): void {
+  onSubmit(): void {    
     if (
       this.registerForm.valid &&
       this.registerForm.value.userPassword ===
@@ -153,7 +153,7 @@ export class RegisterComponent implements OnInit {
         lastname: this.registerForm.value.userLastName!,
         email: this.registerForm.value.userEmail!,
         password: this.registerForm.value.userPassword!,
-        phone: `${this.registerForm.value.countryCode}${this.registerForm.value.userPhone}`,
+        phone: `${this.registerForm.value.countryCode?.dialCode}${this.registerForm.value.userPhone}`,
         address: this.registerForm.value.userAddress!,
       };
 
