@@ -1,4 +1,5 @@
 <main class="w-full h-screen flex items-center justify-center">
+  <p-toast />
   <section
     class="w-[90%] h-[560px] max-w-max py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-between gap-10 shadow-md"
   >
@@ -25,14 +26,14 @@
         <p-stepper
           [value]="currentStep"
           [linear]="true"
-          class="basis-[50rem]"              
+          class="basis-[50rem]"
           [style]="{ width: '100%' }"
         >
           <div class="w-full flex items-center justify-center">
             <p-step-list>
-              <p-step [value]="1">Datos de usuario</p-step>
-              <p-step [value]="2">Datos de la cuenta</p-step>
-              <p-step [value]="3">Información adicional</p-step>
+              <p-step [value]="1" *ngIf="currentStep === 1">Datos de usuario</p-step>
+              <p-step [value]="2" *ngIf="currentStep === 2">Datos de la cuenta</p-step>
+              <p-step [value]="3" *ngIf="currentStep === 3">Información adicional</p-step>
             </p-step-list>
           </div>
 
@@ -72,10 +73,10 @@
                     class="w-full md:w-[80%] flex flex-col pt-6 items-center justify-center"
                   >
                     <p-button
-                      label="Siguiente"                     
+                      label="Siguiente"
                       class="w-full font-poppins bg-surface-500"
                       styleClass="w-full"
-                      (onClick)="activateCallback(2)"
+                      (onClick)="onStepChange(2)"
                       [disabled]="!isStepValid(1)"
                     />
                   </div>
@@ -149,13 +150,13 @@
                       severity="secondary"
                       class="w-full font-poppins"
                       styleClass="w-full"
-                      (onClick)="activateCallback(1)"
+                      (onClick)="onStepChange(1)"
                     />
                     <p-button
                       label="Siguiente"
                       class="w-full font-poppins"
                       styleClass="w-full"
-                      (onClick)="activateCallback(3)"
+                      (onClick)="onStepChange(3)"
                       [disabled]="!isStepValid(2)"
                     />
                   </div>
@@ -236,14 +237,15 @@
                       severity="secondary"
                       class="w-full font-poppins"
                       styleClass="w-full"
-                      (onClick)="activateCallback(2)"
+                      (onClick)="onStepChange(2)"
                     />
                     <p-button
-                      label="Crear cuenta"
+                      [label]="isSubmitting ? 'Registrando...' : 'Registrarse'"
                       class="w-full font-poppins"
                       styleClass="w-full"
                       type="submit"
-                      [disabled]="!isStepValid(3)"                      
+                      [loading]="isSubmitting"
+                      [disabled]="!isStepValid(3)"
                     />
                   </div>
                 </div>
