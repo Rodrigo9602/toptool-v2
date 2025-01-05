@@ -176,9 +176,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onStepChange(nextStep: number): void {
-    if (this.isStepValid(this.currentStep)) {
+    if(nextStep > this.currentStep) {
+      if (this.isStepValid(this.currentStep)) {
+        this.currentStep = nextStep;
+      }
+    } else {
       this.currentStep = nextStep;
-    }
+    }    
   }
 
   async onSubmit() {
@@ -222,10 +226,12 @@ export class RegisterComponent implements OnInit {
       } catch (error) {
         console.error('Error en el proceso de registro:', error);
         // Alerta de error
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error en registro: ${(error as any).message}` });
+        this.messageService.add({ severity: 'error', summary: 'Error en registro', detail: `${(error as any).message}` });
       } finally {
         this.isSubmitting = false;
       }
+    } else {      
+      this.messageService.add({ severity: 'error', summary: 'Error en el registro', detail: 'Algunos datos no fueron llenados correctamente' });
     }
   }
 }

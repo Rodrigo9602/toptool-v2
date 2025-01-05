@@ -1,7 +1,7 @@
 <main class="w-full h-screen flex items-center justify-center">
   <p-toast />
   <section
-    class="w-[90%] h-[560px] max-w-max py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-between gap-10 shadow-md"
+    class="w-[90%] h-[560px] max-w-max py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-between gap-10 shadow-md border border-black"
   >
     <header
       #title
@@ -111,6 +111,9 @@
                         formControlName="userPassword"
                         styleClass="w-full"
                         [inputStyle]="{ width: '100%' }"
+                        weakLabel="Débil"
+                        mediumLabel="Normal"
+                        strongLabel="Fuerte"
                       >
                         <ng-template #header>
                           <div class="font-semibold text-xm mb-4">
@@ -129,6 +132,9 @@
                         formControlName="userPasswordConfirm"
                         styleClass="w-full"
                         [inputStyle]="{ width: '100%' }"
+                        weakLabel="Débil"
+                        mediumLabel="Normal"
+                        strongLabel="Fuerte"
                       >
                         <ng-template #header>
                           <div class="font-semibold text-xm mb-4">
@@ -177,7 +183,7 @@
                       [filter]="true"
                       [showClear]="true"
                       placeholder="Selecciona un país*"
-                      [style]="{ width: '60%' }"
+                      [style]="{ width: '80%' }"
                       optionLabel="name"
                       [filterFields]="['name']"
                       styleClass="w-full country-dropdown"
@@ -194,7 +200,7 @@
                         >
                           <img
                             [src]="country.flag"
-                            class="hidden md:block w-4 h-4 mt-1"
+                            class="hidden md:block w-5 h-5"
                             [alt]="country.name"
                           />
                           <div class="flex">

@@ -24,10 +24,13 @@ export const routes: Routes = [
         component: BaseLayoutComponent,
         children: [
            { path: 'panel', canActivate: [adminGuard, routesGuard], loadComponent: () => import('./pages/backoffice/backoffice.component').then(p => p.BackofficeComponent) },
+           { path: 'profile', canActivate: [routesGuard], loadComponent: () => import('./pages/user/profile/profile.component').then(p => p.ProfileComponent) },
+           { path: 'dashboard', /*canActivate: [routesGuard],*/ loadComponent: () => import('./pages/dashboard/dashboard.component').then(p => p.DashboardComponent)},
            { path: 'clients', canActivate: [routesGuard], loadComponent: () => import('./pages/clients/clients.component').then(p => p.ClientsComponent) },
            { path: 'orders', canActivate: [routesGuard], loadComponent: () => import('./pages/orders/orders.component').then(p => p.OrdersComponent) },
            { path: 'products', canActivate: [routesGuard], loadComponent: () => import('./pages/products/products.component').then(p => p.ProductsComponent) },
            { path: 'warranties', canActivate: [routesGuard], loadComponent: () => import('./pages/warranties/warranties.component').then(p => p.WarrantiesComponent) },
+           { path: 'suppliers', canActivate: [routesGuard], loadComponent: () => import('./pages/suppliers/suppliers.component').then(p => p.SuppliersComponent) },
         ]
     },
 

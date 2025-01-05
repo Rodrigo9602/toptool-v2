@@ -1,1 +1,22 @@
-<p>base-layout works!</p>
+<div class="min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+
+  <div class="flex flex-1">
+    <!-- Integración del SideMenu -->
+    <app-sidemenu></app-sidemenu>
+
+    <!-- Main Content - Ajustado para trabajar con el SideMenu -->
+    <main class="flex-1 transition-all duration-300 bg-[var(--hover-primary-color)]"
+          [ngClass]="{'ml-16': !sideMenuExpanded, 'md:ml-64': sideMenuExpanded}">
+      <div class="container mx-auto p-6 transition-colors duration-300 ease-in-out">
+        <h1 class="text-2xl font-semibold text-[var(--secondary-color)] mb-6">
+          Contenido Principal
+        </h1>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </main>
+  </div> 
+</div>

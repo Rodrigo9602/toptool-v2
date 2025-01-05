@@ -10,3 +10,24 @@
 .font-ibm {
     font-family: 'ibm';
 }
+
+:root {
+    --primary-color: theme('colors.slate.800');
+    --secondary-color: theme('colors.zinc.50');  
+    --hover-primary-color: theme('colors.slate.600');
+    --hover-secondary-color: theme('colors.zinc.100');
+    --active-primary-color: theme('colors.slate.700'); 
+    --active-secondary-color: theme('colors.zinc.200');  
+}
+
+:root[data-theme="light"] {
+    // Variables de color light mode
+    --primary-color: theme('colors.zinc.50');
+    --secondary-color: theme('colors.slate.800');
+    --hover-primary-color: theme('colors.zinc.300');
+    --hover-secondary-color: theme('colors.slate.600');
+    --active-primary-color: theme('colors.zinc.200');
+    --active-secondary-color: theme('colors.slate.700');    
+} 
+
+

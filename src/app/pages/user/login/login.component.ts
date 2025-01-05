@@ -1,6 +1,6 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
+    private _router:Router,
     private recaptchaService: RecaptchaService,
     private messageService: MessageService,
     @Inject(PLATFORM_ID) platformId: object
@@ -102,6 +103,9 @@ export class LoginComponent implements OnInit {
         });
         // Alerta de exito
        this.messageService.add({severity: 'success', summary: 'Sesión Iniciada', detail: 'Bienvenido de vuelta!'});
+       setTimeout(()=>{
+        this._router.navigate(['/dashboard'])
+       }, 2000)
       } catch (error) {
         console.error('Error al verificar reCAPTCHA', error);
         // Alerta de error

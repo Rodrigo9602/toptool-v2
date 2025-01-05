@@ -1,0 +1,15 @@
+.sidemenu {
+  @apply fixed left-0 top-[60px];
+
+  .menu-item {
+    @apply relative;
+
+    &:hover {
+      @apply bg-opacity-50;
+    }
+  }
+
+  .menu-label {
+    @apply whitespace-nowrap;
+  }
+}

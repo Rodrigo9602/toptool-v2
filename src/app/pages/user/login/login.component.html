@@ -1,7 +1,7 @@
 <main class="w-full h-screen flex items-center justify-center">
   <p-toast />
   <section
-    class="w-[90%] max-w-[25rem] py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-center gap-10 shadow-md"
+    class="w-[90%] max-w-[25rem] py-8 px-6 rounded-md overflow-hidden flex flex-col items-center justify-center gap-10 shadow-md border border-black"
   >
     <header
       #title
@@ -44,6 +44,9 @@
           formControlName="userPassword"
           styleClass="w-full"
           [inputStyle]="{ width: '100%' }"
+          weakLabel="Débil"
+          mediumLabel="Normal"
+          strongLabel="Fuerte"
         >
           <ng-template #header>
             <div class="font-semibold text-xm mb-4">
@@ -55,7 +58,9 @@
       </p-floatlabel>
 
       <section>
-        <p class="font-poppins font-normal text-sm leading-normal text-[#64748b]">
+        <p
+          class="font-poppins font-normal text-sm leading-normal text-[#64748b]"
+        >
           <a routerLink="/recover">¿Olvidaste tu contraseña?</a>
         </p>
       </section>
@@ -64,7 +69,8 @@
     <section #footer class="w-full">
       <div class="flex gap-4 mt-1">
         <p-button
-          [label]="isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'"          
+          severity="primary"          
+          [label]="isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'"
           class="w-full font-poppins"
           styleClass="w-full"
           type="submit"

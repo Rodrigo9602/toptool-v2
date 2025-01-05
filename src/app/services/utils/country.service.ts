@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError, of } from 'rxjs';
 import { CountryApiResponse, Country } from '../../interfaces/country';
+import { CountrieList } from '../../utils/secondary-countries-data';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,12 @@ export class CountryService {
    * Obtiene la lista de países y la transforma al formato requerido
    * Realiza el filtrado de países que tienen código telefónico
    */
-  getCountries(): Observable<Country[]> {
+  getCountries(): Observable<Country[]> {    
     return this.http.get<CountryApiResponse[]>(this.API_URL).pipe(
       map(countries => this.transformCountries(countries)),
       catchError(error => {
         console.error('Error fetching countries:', error);
-        return of([]); // Retorna un array vacío en caso de error
+        return of(CountrieList); // Retorna un array vacío en caso de error
       })
     );
   }
