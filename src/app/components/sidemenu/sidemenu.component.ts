@@ -76,10 +76,5 @@ export class SidemenuComponent implements OnInit {
     if (window.innerWidth < 768) {
       this.sideMenuService.setMenuExpanded(false);
     }
-  }
-
-  // Método para navegar a una ruta
-  navigateTo(route: string): void {
-    this._router.navigate([route]);
-  }
+  } 
 }

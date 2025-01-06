@@ -1,1 +1,63 @@
-<p class="text-black">dashboard works!</p>
+<section class="container mx-auto p-4 space-y-6">
+    <!-- Primera fila - 3 cards horizontales -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="h-full">
+        <p-card header="Card 1" styleClass="h-full transition-colors duration-300 ease-in-out" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+          <p class="m-0">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur.
+          </p>
+        </p-card>
+      </div>
+  
+      <div class="h-full">
+        <p-card header="Card 1" styleClass="h-full transition-colors duration-300 ease-in-out" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+          <p class="m-0">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur.
+          </p>
+        </p-card>
+      </div>
+  
+      <div class="h-full">
+        <p-card header="Card 1" styleClass="h-full transition-colors duration-300 ease-in-out" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+          <p class="m-0">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur.
+          </p>
+        </p-card>
+      </div>
+    </div>
+  
+    <!-- Segunda fila - 1 card a la izquierda y 2 en columna a la derecha -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Card grande a la izquierda -->
+      <div class="h-full">
+        <p-card header="Card 1" styleClass="h-full transition-colors duration-300 ease-in-out" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+          <p class="m-0 flex-grow">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae 
+            numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis 
+            esse, cupiditate neque quas! Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Necessitatibus eveniet temporibus amet accusantium distinctio ratione dolor nisi mollitia rem eligendi 
+            cupiditate nihil, deserunt accusamus repudiandae possimus quasi ullam excepturi sequi!
+          </p>
+        </p-card>
+      </div>
+  
+      <!-- Columna derecha con 2 cards apiladas -->
+      <div class="grid grid-rows-2 gap-4 h-full">
+        <div class="h-full">
+            <p-card header="Card 1" styleClass="h-full transition-colors duration-300 ease-in-out" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+            <p class="m-0">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </p>
+          </p-card>
+        </div>
+        
+        <div class="h-full">
+            <p-card header="Card 1" styleClass="h-full transition-colors duration-300 ease-in-out" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+            <p class="m-0">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </p>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </section>

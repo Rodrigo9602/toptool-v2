@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -33,7 +33,7 @@ import { MessageService } from 'primeng/api';
   styleUrl: './login.component.scss',
   providers: [MessageService],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   private readonly isBrowser: boolean = false;
   private grecaptcha: any;
 
@@ -114,5 +114,21 @@ export class LoginComponent implements OnInit {
         this.isSubmitting = false;
       }
     }
+  }
+
+  ngOnDestroy() {   
+    // Eliminar el script de reCAPTCHA
+    const scripts = document.getElementsByTagName('script');
+    for (let i = scripts.length - 1; i >= 0; i--) {
+      if (scripts[i].src.includes('recaptcha')) {
+        scripts[i].remove();
+      }
+    }
+
+    // Limpiar elementos del DOM relacionados con reCAPTCHA
+    const elements = document.getElementsByClassName('grecaptcha-badge');
+    while (elements.length > 0) {
+      elements[0].remove();
+    }  
   }
 }

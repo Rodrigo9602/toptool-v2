@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs/operators';
@@ -43,7 +43,7 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './register.component.scss',
   providers: [MessageService],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   public currentStep: number = 1;
   public countries: Country[] = [];
   public filteredCountries: Country[] = [];
@@ -233,5 +233,21 @@ export class RegisterComponent implements OnInit {
     } else {      
       this.messageService.add({ severity: 'error', summary: 'Error en el registro', detail: 'Algunos datos no fueron llenados correctamente' });
     }
+  }
+
+  ngOnDestroy() {   
+    // Eliminar el script de reCAPTCHA
+    const scripts = document.getElementsByTagName('script');
+    for (let i = scripts.length - 1; i >= 0; i--) {
+      if (scripts[i].src.includes('recaptcha')) {
+        scripts[i].remove();
+      }
+    }
+
+    // Limpiar elementos del DOM relacionados con reCAPTCHA
+    const elements = document.getElementsByClassName('grecaptcha-badge');
+    while (elements.length > 0) {
+      elements[0].remove();
+    }  
   }
 }

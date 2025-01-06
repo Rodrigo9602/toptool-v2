@@ -1,12 +1,13 @@
-<div 
+<div
   class="sidemenu h-screen transition-all duration-300 bg-[var(--primary-color)] text-[var(--secondary-color)]"
-  [ngClass]="{'w-64': expanded, 'w-16': !expanded}">
-  
+  [ngClass]="{ 'w-64': expanded, 'w-16': !expanded }"
+>
   <!-- Botón para expandir/contraer -->
-  <button 
+  <button
     pButton
-    class="p-button-text p-button-rounded p-button-plain w-full flex justify-end pr-4 py-3"
-    (click)="toggleMenu()">
+    class="p-button-text w-full flex justify-end pr-4 py-3 hover:text-[var(--hover-secondary-color)] hover:bg-[var(--hover-primary-color)]"
+    (click)="toggleMenu()"
+  >
     <i [class]="expanded ? 'pi pi-angle-left' : 'pi pi-angle-right'"></i>
   </button>
 
@@ -14,30 +15,36 @@
   <ul class="menu-list">
     <ng-container *ngFor="let item of menuItems">
       <!-- Elemento principal -->
-      <li 
-        class="menu-item cursor-pointer hover:text-[var(--hover-secondary-color)] hover:bg-[var(--hover-primary-color)]"       
-        (click)="navigateTo(item.route)"
-        [routerLinkActive]="['bg-[var(--hover-primary-color)]', 'text-[var(--hover-secondary-color)]']">
+      <li
+        class="menu-item cursor-pointer hover:text-[var(--hover-secondary-color)] hover:bg-[var(--hover-primary-color)]"
+        [routerLink]="item.route"
+        [routerLinkActive]="['active-link']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <div class="flex items-center px-4 py-3 gap-3">
           <i [class]="item.icon + ' text-xl'"></i>
-          <span 
+          <span
             class="menu-label transition-opacity duration-300"
-            [ngClass]="{'opacity-0': !expanded, 'opacity-100': expanded}">
-            {{item.label}}
+            [ngClass]="{ 'opacity-0': !expanded, 'opacity-100': expanded }"
+          >
+            {{ item.label }}
           </span>
         </div>
       </li>
 
       <!-- Subelementos (si existen) -->
       <ng-container *ngIf="item.children && expanded">
-        <li 
+        <li
           *ngFor="let child of item.children"
           class="menu-item cursor-pointer pl-8"
-          [ngClass]="{'hover:bg-gray-700': true}"
-          (click)="navigateTo(child.route)">
+          [ngClass]="{ 'hover:bg-gray-700': true }"
+          [routerLink]="item.route"
+          [routerLinkActive]="['active-link']"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <div class="flex items-center px-4 py-2 gap-3">
             <i [class]="child.icon + ' text-sm'"></i>
-            <span class="menu-label text-sm">{{child.label}}</span>
+            <span class="menu-label text-sm">{{ child.label }}</span>
           </div>
         </li>
       </ng-container>
