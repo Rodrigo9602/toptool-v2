@@ -45,7 +45,12 @@ export class SidemenuComponent implements OnInit {
       label: 'Garantías',
       icon: 'pi pi-file-check',
       route: '/warranties'
-    },       
+    },  
+    {
+      label: 'Gastos',
+      icon: 'pi pi-wallet',
+      route: '/expenses'
+    },    
     {
       label: 'Panel de control',
       icon: 'pi pi-cog',

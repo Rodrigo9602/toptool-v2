@@ -4,5 +4,8 @@ export interface Client {
     lastname: String,
     ci: String,    
     phone: String,
-    address: String,    
+    address: String,  
+    registeredDate: Date  
 }
+
+export type appClient = Omit<Client, 'id'>;

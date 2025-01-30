@@ -31,6 +31,7 @@ export const routes: Routes = [
            { path: 'products', canActivate: [routesGuard], loadComponent: () => import('./pages/products/products.component').then(p => p.ProductsComponent) },
            { path: 'warranties', canActivate: [routesGuard], loadComponent: () => import('./pages/warranties/warranties.component').then(p => p.WarrantiesComponent) },
            { path: 'suppliers', canActivate: [routesGuard], loadComponent: () => import('./pages/suppliers/suppliers.component').then(p => p.SuppliersComponent) },
+           { path: 'expenses', canActivate: [routesGuard], loadComponent: () => import('./pages/expenses/expenses.component').then(p => p.ExpensesComponent) },
         ]
     },
 
