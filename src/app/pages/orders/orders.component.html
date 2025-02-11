@@ -1,1 +1,259 @@
-<p>orders works!</p>
+<div class="w-full hidden md:block p-4 bg-[var(--primary-color)] text-[var(--secondary-color)]">
+  <!-- Header con búsqueda y botón de añadir -->
+  <div
+    class="flex flex-col md:flex-row justify-between gap-4 items-center mb-6 p-6 bg-[var(--hover-primary-color)] shadow-sm rounded-lg">
+    <!-- Campo de búsqueda mejorado -->
+    <div class="w-full md:w-96">
+      <span class="p-input-icon-left">
+        <input type="text" pInputText [(ngModel)]="searchText" (ngModelChange)="onSearch()"
+          placeholder="Buscar por cliente, servicio o fecha..." class="w-full p-3 
+          bg-[var(--secondary-color)] 
+          text-[var(--primary-color)] 
+          border border-[var(--hover-secondary-color)] 
+          focus:border-[var(--hover-primary-color)]" />
+      </span>
+    </div>
+
+    <button pButton type="button" icon="pi pi-plus" label="Nueva Orden" class="p-3 rounded-md outline-none cursor-pointer bg-[var(--primary-color)] text-[var(--secondary-color)] hover:bg-[var(--hover-primary-color)] 
+      active:bg-[var(--active-primary-color)] w-full md:w-auto" (click)="addOrder()"></button>
+  </div>
+
+  <!-- Tabla de órdenes mejorada -->
+  <div class="bg-[var(--hover-primary-color)] rounded-2xl shadow-sm">
+    <p-table [value]="filteredOrders" [loading]="loading" [paginator]="true" [rows]="rows" [totalRecords]="totalRecords"
+      [lazy]="true" (onLazyLoad)="loadOrders($event)" [rowsPerPageOptions]="[5, 10, 25, 50]"
+      styleClass="p-datatable-striped" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} órdenes" [rowHover]="true">
+      <ng-template pTemplate="header">
+        <tr class="bg-[var(--hover-secondary-color)]">
+          <th class="text-sm font-semibold">ID</th>
+          <th class="text-sm font-semibold">Cliente</th>
+          <th class="text-sm font-semibold">Servicios y Ventas</th>
+          <th class="text-sm font-semibold">Garantía</th>
+          <th class="text-sm font-semibold">Precio Total</th>
+          <th class="text-sm font-semibold text-center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td class="text-sm">{{ order.id }}</td>
+          <td class="text-sm font-medium">
+            {{ order.client.name }} {{ order.client.lastname }}
+          </td>
+          <td>
+            @if(order.services && order.services.length > 0) {
+              <ul class="space-y-1">
+                @for (service of order.services; track service) {
+                <li class="text-sm flex flex-col items-start justify-center gap-1">
+                  <div class="w-full flex">
+                    <span class="font-medium">{{ service.description }}</span>
+                    <span class="text-gray-600">- ${{ service.servicesPrice | number :"1.2-2" }}</span>                   
+                  </div>                 
+                </li>
+                }
+              </ul>
+            }
+
+            @if(order.sells && order.sells.length > 0) {
+              @for (sell of order.sells; track sell) {
+                <ul class="space-y-1">
+                  @for (product of sell.products; track product) {
+                    <li class="text-sm flex flex-col items-start justify-center gap-1">
+                      <div class="w-full flex">
+                        <span class="font-medium">{{ product.name }}</span>                        
+                        <span class="text-gray-600">- ${{ product.price | number :"1.2-2" }}</span>                        
+                      </div>                 
+                    </li>
+                  }
+                </ul>
+              }             
+            }
+            
+          </td>
+          <td>
+            <div class="space-y-1">
+              <div class="text-sm flex items-center">
+                <i class="pi pi-calendar text-gray-500 mr-2"></i>
+                <span>Emitido:
+                  {{ order.warranty.emitedOn | date : "dd/MM/yyyy" }}</span>
+              </div>
+              <div class="text-sm flex items-center">
+                <i class="pi pi-clock text-gray-500 mr-2"></i>
+                <span>Vence:
+                  {{ order.warranty.timeStamp | date : "dd/MM/yyyy" }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm font-semibold">
+              {{ order.totalPrice | currency : "USD" : "symbol" : "1.2-2" }}
+            </div>
+          </td>
+          <td>
+            <div class="flex justify-center">
+              <button pButton type="button" icon="pi pi-ellipsis-v" (click)="showMenu($event, order)"
+                class="p-button-text p-button-rounded"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      @if (loading) {
+      <div class="p-6">
+        <!-- Skeleton para el encabezado de la tabla -->
+        <div class="flex gap-4 mb-4">
+          @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+          <p-skeleton width="100%" height="2rem"></p-skeleton>
+          }
+        </div>
+
+        <!-- Skeleton para las filas de la tabla -->
+        @for (_ of [1, 2, 3, 4, 5]; track $index) {
+        <div class="flex gap-4 mb-4">
+          @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+          <p-skeleton width="100%" height="3rem"></p-skeleton>
+          }
+        </div>
+        }
+      </div>
+      }
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center p-6">
+            <div class="flex flex-col items-center gap-1">
+              <i class="pi pi-inbox text-4xl text-gray-400"></i>
+              <span class="text-gray-500">No se encontraron órdenes</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<div class="w-full block md:hidden py-4 bg-[var(--primary-color)] rounded-lg">
+  <section class="w-full px-4">
+    <div
+      class="flex flex-col md:flex-row justify-between gap-4 items-center mb-6 p-6 bg-[var(--hover-primary-color)] shadow-sm rounded-lg">
+      <!-- Campo de búsqueda mejorado -->
+      <div class="w-full md:w-96">
+        <span class="p-input-icon-left">
+          <input type="text" pInputText [(ngModel)]="searchText" (ngModelChange)="onSearch()" placeholder="Buscar orden"
+            class="w-full p-3" />
+        </span>
+      </div>
+
+      <button pButton type="button" icon="pi pi-plus" label="Nueva Orden"
+        class="p-3 rounded-md outline-none cursor-pointer bg-[var(--primary-color)] w-full md:w-auto"
+        (click)="addOrder()"></button>
+    </div>
+  </section>
+
+  <div class="w-full h-auto bg-[var(--primary-color)] rounded-lg py-3">
+    @for (order of filteredOrders; track $index) {
+    <article class="w-full h-auto flex flex-col items-center justify-center gap-12 bg-[var(--primary-color)] mb-4">
+      <header class="w-full flex flex-col items-start justify-center gap-1 px-4 pt-3">
+        <div class="w-full flex items-center justify-between">
+          <p class="font-poppins text-base font-semibold leading-normal">{{order.id}} {{order.client.name.split('
+            ')[0]}} {{order.client.lastname.split(' ')[0]}}</p>
+          <p class="font-poppins text-base font-semibold leading-normal text-[var(--secondary-color)]">{{
+            order.totalPrice | currency : "USD" : "symbol" : "1.2-2" }}</p>
+        </div>
+        <div class="w-full flex items-start justify-between">
+          <div class="text-sm flex items-center">
+            <i class="pi pi-calendar text-gray-500 mr-2"></i>
+            <span class="font-ibm text-sm text-[var(--secondary-color)]">{{ order.warranty.emitedOn | date :
+              "dd/MM/yyyy" }}</span>
+          </div>
+          <div class="text-sm flex items-center">
+            <i class="pi pi-clock text-gray-500 mr-2"></i>
+            <span class="font-ibm text-sm text-[var(--secondary-color)]">{{ order.warranty.timeStamp | date :
+              "dd/MM/yyyy" }}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="w-full flex flex-col gap-2 items-center justify-center">
+        <button type="button" class="w-[90%] rounded-2xl flex items-center justify-center py-2 bg-[var(--secondary-color)]" (click)="viewOrder(order)">
+          <label class="font-poppins text-white font-normal leading-6">Ver detalles</label>
+        </button>
+  
+        <section class="w-[90%] rounded-2xl flex items-center justify-center py-2 bg-[var(--hover-primary-color)]">        
+          <button class="bg-transparent outline-none" (click)="editOrder(order)">
+            <i class="pi pi-pencil text-[var(--secondary-color)] mr-2"></i>
+          </button>
+          <button class="bg-transparent outline-none" (click)="deleteOrder()">
+            <i class="pi pi-trash text-[var(--secondary-color)] mr-2"></i>
+          </button>
+        </section>
+      </div>       
+  </article>
+  @if($index < filteredOrders.length-1){ <div class="w-full h-[4px] bg-[var(--hover-primary-color)]"></div>}
+  }
+
+  <!-- Skeleton para la carga en móvil -->
+  @if (loading) {
+  <div class="w-full h-auto bg-[var(--primary-color)] rounded-lg py-3">
+    @for (_ of [1, 2, 3, 4, 5]; track $index) {
+    <article class="w-full h-auto flex flex-col items-center justify-center gap-4 bg-[var(--primary-color)] mb-4">
+      <header class="w-full flex flex-col items-start justify-center gap-1 px-4">
+        <div class="w-full flex items-center justify-between">
+          <p-skeleton width="10rem" height="1.5rem"></p-skeleton>
+          <p-skeleton width="6rem" height="1.5rem"></p-skeleton>
+        </div>
+        <div class="w-full flex items-start justify-center gap-1">
+          <p-skeleton width="8rem" height="1.2rem"></p-skeleton>
+          <p-skeleton width="8rem" height="1.2rem"></p-skeleton>
+        </div>
+      </header>
+      <section class="w-full flex flex-col items-start justify-center py-2 px-4">
+        <p-skeleton width="100%" height="1rem" class="mb-2"></p-skeleton>
+        <p-skeleton width="100%" height="1rem"></p-skeleton>
+      </section>
+      <section class="w-[90%] rounded-full flex items-center justify-center py-2 bg-[var(--hover-primary-color)]">
+        <p-skeleton width="2rem" height="2rem" shape="circle" class="mr-2"></p-skeleton>
+        <p-skeleton width="2rem" height="2rem" shape="circle"></p-skeleton>
+      </section>
+      @if($index < 4){ <div class="w-full h-[4px] bg-[var(--hover-primary-color)]">
+  </div>
+  }
+  </article>
+  }
+</div>
+}
+
+<!-- Mensaje de "No se encontraron órdenes" en móvil -->
+@if (!loading && filteredOrders.length === 0) {
+<div class="w-full h-auto bg-[var(--primary-color)] rounded-lg py-3">
+  <div class="flex flex-col items-center justify-center gap-2 p-6">
+    <i class="pi pi-inbox text-4xl text-gray-400"></i>
+    <span class="text-gray-500">No se encontraron órdenes</span>
+  </div>
+</div>
+}
+</div>
+</div>
+<!-- Menú contextual -->
+<p-menu #menu [popup]="true" [model]="contextMenuItems" [appendTo]="'body'"></p-menu>
+<!-- Modal para añadir ordenes-->
+<app-order-form-modal
+  [(visible)]="showOrderFormModal"
+  (onSave)="onSaveOrder($event)">
+</app-order-form-modal>
+<!-- Modal para visualizar detalles de la orden-->
+<app-order-details
+  [(visible)]="showOrderDetailsModal"
+  [order]="selectedOrder"
+/>
+<!-- Modal para editar detalles de la orden-->
+<app-edit-order
+  [(visible)]="showEditOrderModal"
+  [order]="selectedOrder"
+/>
+<!-- Modal para confirmar eliminación de la orden-->
+<app-proccess-delete
+  [(visible)]="showConfirmDeleteModal"
+  (onDelete)="onDeleteConfirm()"
+/>

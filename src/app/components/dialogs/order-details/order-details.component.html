@@ -1,0 +1,184 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{width: '90vw', maxWidth: '768px'}" [draggable]="false"
+    [resizable]="false" header="Información de la orden" styleClass="p-fluid" [closeOnEscape]="true"
+    (onHide)="hideModal()">
+    @if (order) {
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+        <div class="text-xl font-medium mb-4">Información del Cliente</div>
+        <div class="flex flex-col gap-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="name" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                    <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.name}}</h1>
+                    <label for="name" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                        Nombre
+                    </label>
+                </div>
+                <div id="lastname" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                    <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.lastname}}</h1>
+                    <label for="lastname" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                        Apellido
+                    </label>
+                </div>
+            </div>
+
+             <!-- Additional Client Information -->
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="ci" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                    <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.ci}}</h1>
+                    <label for="ci" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                        Identificación personal
+                    </label>
+                </div>
+
+                <div id="phone" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                    <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.phone}}</h1>
+                    <label for="phone" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                        Número de teléfono
+                    </label>
+                </div>
+            </div>
+
+            <!-- Address and Registration Date -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="address" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                    <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.address}}</h1>
+                    <label for="address" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                        Dirección
+                    </label>
+                </div>
+
+                <div id="register_date" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                    <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.registeredDate | date:
+                        'dd/MM/yyyy'}}</h1>
+                    <label for="register_date" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                        Fecha de registro
+                    </label>
+                </div>               
+            </div>           
+            
+        </div>
+    </div>
+
+    <div class="surface-card p-4 shadow-2 border-round mb-3"> 
+        @if(order.services && order.services.length > 0) {
+            <section class="w-full">
+                @for (service of order.services; let i = $index; track i) {
+                    <header class="flex justify-between items-center mb-6">
+                        <h1 class="text-xl font-medium">Servicio no. {{ i + 1 }}</h1>
+                    </header>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="service_description"
+                            class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{service.description}}</h1>
+                            <label for="service_description"
+                                class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Descripción del servicio
+                            </label>
+                        </div>
+
+                        <div id="service_price"
+                            class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{service.servicesPrice}}</h1>
+                            <label for="service_description"
+                                class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Precio del servicio
+                            </label>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center justify-start mt-8">
+                        <div id="service_additionalInfo"
+                            class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal" [ngClass]="service.additionalInfo === undefined || service.additionalInfo.length === 0 ? 'text-red-300': 'text-black' ">
+                                {{service.additionalInfo === undefined || service.additionalInfo.length === 0 ? 'No hay información adicional': service.additionalInfo}}
+                            </h1>
+                            <label for="service_additionalInfo"
+                                class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Información adicional
+                            </label>
+                        </div>
+                    </div>
+
+                    <p-divider />
+                }
+            </section>            
+        }        
+
+        @if(order.sells && order.sells.length > 0) {
+            <section class="w-full">                
+                @for (sell of order.sells;  let i = $index; track i) {
+                    <header class="flex justify-between items-center mb-4">
+                        <h1 class="text-xl font-medium">Venta no. {{ i + 1 }}</h1>
+                    </header>
+                    @for(product of sell.products; let j=$index; track j) {
+                        <div class="w-full grid grid-cols-1 md:grid-cols-2 mb-5 gap-4">
+                            <div id="service_description" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                                <h1 class="font-poppins font-normal text-base leading-normal">{{product.name}}</h1>
+                                <label for="service_description"
+                                    class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                    Nombre del producto
+                                </label>
+                            </div>
+
+                            <div id="service_price" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                                <h1 class="font-poppins font-normal text-base leading-normal">{{product.price}}</h1>
+                                <label for="service_description"
+                                    class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                    Precio del producto
+                                </label>
+                            </div>
+                        </div>                       
+                    }
+                    <p-divider />
+                }
+            </section>            
+        }
+        
+    </div>
+
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+        <header class="flex justify-between items-center mb-4">
+            <h1 class="text-xl font-medium">Fotos del dispositivo</h1>
+        </header>
+
+        <div class="flex flex-nowrap overflow-x-auto gap-3 px-4 py-12" style="min-height: 150px;"
+            [ngClass]="order.devicesImages === undefined || order.devicesImages.length === 0 ? 'rounded-2xl border border-dashed border-red-300': ''">
+            @for (image of order.devicesImages; track $index) {
+            <div class="flex-shrink-0 relative" style="width: 200px; height: 200px;">
+                <img [src]="image.fileUrl" [alt]="image.fileName"
+                    class="w-full h-full rounded-md border border-[#cbd5e1]" style="object-fit: cover">
+            </div>
+            }
+            @if (order.devicesImages === undefined || order.devicesImages.length === 0) {
+            <div class="w-full flex flex-col items-center justify-center gap-3">
+                <i class="pi pi-image"></i>
+                <p class="text-gray-500">No hay imágenes disponibles</p>
+            </div>
+
+            }
+        </div>
+    </div>
+
+    <div class="surface-card p-4 shadow-2 border-round mb-3 flex flex-col items-start justify-center gap-6">
+        <header class="flex justify-between items-center mb-4">
+            <h1 class="text-xl font-medium">Datos de la garantía</h1>
+        </header>
+
+        <div id="garanty_date" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+            <h1 class="font-poppins font-normal text-base leading-normal">{{order.warranty.emitedOn | date:
+                'dd/MM/yyyy'}}</h1>
+            <label for="garanty_date" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                Fecha de emisión
+            </label>
+        </div>
+
+        <div id="garanty_stamp" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+            <h1 class="font-poppins font-normal text-base leading-normal">{{order.warranty.timeStamp | date:
+                'dd/MM/yyyy'}}</h1>
+            <label for="product_price" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                Fecha de conclusión
+            </label>
+        </div>
+    </div>
+    }
+</p-dialog>

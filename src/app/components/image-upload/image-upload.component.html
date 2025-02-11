@@ -1,0 +1,59 @@
+<div class="w-full">
+    <!-- Drop zone -->
+    <div
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      [class]="dragOver ? 'bg-blue-50' : 'bg-gray-50'"
+      class="w-full border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 ease-in-out cursor-pointer"
+    >
+      <!-- Upload icon and text -->
+      <div class="flex flex-col items-center justify-center gap-4">
+        <div class="rounded-full bg-blue-100 w-12 h-12 flex items-center justify-center">
+          <i class="pi pi-upload text-2xl text-blue-500"></i>
+        </div>
+        <div class="text-gray-600">
+          <p class="font-medium">Arrastra y suelta imágenes aquí</p>
+          <p class="text-sm">o</p>
+          <label class="text-blue-500 hover:text-blue-600 cursor-pointer">
+            Selecciona archivos
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              class="hidden"
+              (change)="onFileSelect($event)"
+            >
+          </label>
+        </div>
+        <p class="text-sm text-gray-500">
+          Máximo {{ maxFiles }} imágenes, {{ formatFileSize(maxFileSize) }} por archivo
+        </p>
+      </div>
+    </div>
+  
+    <!-- Image preview grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <div *ngFor="let image of images; let i = index" class="relative group">
+        <img
+          [src]="image.fileUrl"
+          [alt]="image.fileName"
+          class="w-full h-40 object-cover rounded-lg"
+        >
+        <!-- Image info overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex flex-col justify-between p-2">
+          <div class="text-white text-sm">
+            <p class="truncate">{{ image.fileName }}</p>
+            <p>{{ formatFileSize(image.fileSize) }}</p>
+          </div>
+          <button
+            type="button"
+            (click)="removeImage(i)"
+            class="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition-colors duration-200"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

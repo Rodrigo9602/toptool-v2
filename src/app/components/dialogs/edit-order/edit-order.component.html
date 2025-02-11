@@ -1,0 +1,215 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{width: '90vw', maxWidth: '768px'}" [draggable]="false"
+    [resizable]="false" header="Editar Orden" styleClass="p-fluid" [closeOnEscape]="true" (onHide)="hideModal()">
+    @if(!order) {
+        <app-loading firstColor="#38bdf8" secondColor="#60a5fa" thirdColor="#818cf8" />
+    } @else {
+        <form [formGroup]="orderForm" (ngSubmit)="updateOrder()">
+            <!-- Client Information Section -->
+            <div class="surface-card p-4 shadow-2 border-round mb-3">
+                <div class="text-xl font-medium mb-3">Información del Cliente</div>
+                <div class="flex flex-col gap-6">
+    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="name" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.name}}</h1>
+                            <label for="name" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Nombre
+                            </label>
+                        </div>
+                        <div id="lastname" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.lastname}}</h1>
+                            <label for="lastname" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Apellido
+                            </label>
+                        </div>
+                    </div>
+        
+                     <!-- Additional Client Information -->
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="ci" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.ci}}</h1>
+                            <label for="ci" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Identificación personal
+                            </label>
+                        </div>
+        
+                        <div id="phone" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.phone}}</h1>
+                            <label for="phone" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Número de teléfono
+                            </label>
+                        </div>
+                    </div>
+        
+                    <!-- Address and Registration Date -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="address" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.address}}</h1>
+                            <label for="address" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Dirección
+                            </label>
+                        </div>
+        
+                        <div id="register_date" class="relative w-full rounded-md border border-[1px] border-[#cbd5e1] px-4 py-2">
+                            <h1 class="font-poppins font-normal text-base leading-normal">{{order.client.registeredDate | date:
+                                'dd/MM/yyyy'}}</h1>
+                            <label for="register_date" class="absolute -top-4 left-2 block text-900 font-medium px-1 bg-white">
+                                Fecha de registro
+                            </label>
+                        </div>               
+                    </div>           
+                    
+                </div>
+            </div>
+    
+            <!-- Services Section -->
+            <div class="surface-card p-4 shadow-2 border-round mb-3">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="text-xl font-medium">Servicios</div>
+                    <p-button type="button" icon="pi pi-plus" label="Agregar Servicio" (onClick)="addService()"
+                        severity="secondary"></p-button>
+                </div>
+    
+                <div formArrayName="services">
+                    @for (service of services.controls; let i = $index; track i) {
+                    <div [formGroupName]="i" class="mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-lg font-medium">Servicio {{ i + 1 }}</h2>
+                            <p-button type="button" icon="pi pi-trash" (onClick)="removeService(i)" severity="danger"
+                                [text]="true"></p-button>
+                        </div>
+    
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <p-floatlabel variant="on" class="w-full field">
+                                <input [id]="'service-description-' + i" type="text" pInputText
+                                    formControlName="description" class="w-full">
+                                <label [for]="'service-description-' + i">Descripción del Servicio</label>
+                            </p-floatlabel>
+    
+                            <p-floatlabel variant="on" class="w-full field">
+                                <p-inputNumber [id]="'service-price-' + i" formControlName="servicesPrice" mode="currency"
+                                    currency="USD" [minFractionDigits]="2" class="w-full">
+                                </p-inputNumber>
+                                <label [for]="'service-price-' + i">Precio</label>
+                            </p-floatlabel>
+                        </div>
+    
+                        <div class="flex flex-col gap-4 mt-3">
+                            <p-floatlabel variant="on">
+                                <textarea pTextarea [id]="'additionalInfo-' + i" formControlName="additionalInfo" rows="5"
+                                    cols="30" style="resize: none"
+                                    class="h-full outline-none border-round w-full border-gray-50"></textarea>
+                                <label [for]="'additionalInfo-' + i" class="block text-900 font-medium mb-2">Información
+                                    adicional</label>
+                            </p-floatlabel>
+                        </div>
+    
+                        <p-divider></p-divider>
+                    </div>
+                    }
+                </div>
+            </div>
+    
+            <!-- Sales Section -->
+            <div class="surface-card p-4 shadow-2 border-round mb-3">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="text-xl font-medium">Ventas</div>
+                    <p-button type="button" icon="pi pi-plus" label="Agregar Venta" (onClick)="addSell()"
+                        severity="secondary"></p-button>
+                </div>
+    
+                <div formArrayName="sells">
+                    @for (sell of sells.controls; let i = $index; track i) {
+                    <div [formGroupName]="i" class="mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-lg font-medium">Venta {{ i + 1 }}</h2>
+                            <p-button type="button" icon="pi pi-trash" (onClick)="removeSell(i)" severity="danger"
+                                [text]="true"></p-button>
+                        </div>
+    
+                        <!-- Products in Sale -->
+                        <div formArrayName="products">
+                            @for (product of getSellProducts(i).controls; let j = $index; track j) {
+                            <div [formGroupName]="j" class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
+                                <div class="md:col-span-6">
+                                    <p-select class="w-full" [options]="productsList()" formControlName="productId"
+                                        optionLabel="name" optionValue="id" placeholder="Seleccionar producto"
+                                        (onChange)="onProductSelected(i, j)" [showClear]="false" [filter]="true"
+                                        filterBy="name">
+                                    </p-select>
+                                </div>
+                                <div class="md:col-span-4">
+                                    <p-inputNumber formControlName="price" mode="currency" currency="USD"
+                                        [minFractionDigits]="2" [readonly]="true" class="w-full">
+                                    </p-inputNumber>
+                                </div>
+                                <div class="md:col-span-2 flex justify-end">
+                                    <button type="button" pButton icon="pi pi-trash" class="p-button-text p-button-danger"
+                                        (click)="removeProductFromSell(i, j)"></button>
+                                </div>
+                            </div>
+                            }
+    
+                            <div class="flex justify-between items-center mt-2">
+                                <p-button type="button" icon="pi pi-plus" label="Agregar Producto"
+                                    (onClick)="addProductToSell(i)" severity="secondary" [text]="true">
+                                </p-button>
+                                <div class="text-right">
+                                    <span class="font-medium">Total de venta: </span>
+                                    <span class="font-bold">
+                                        {{ sells.at(i).get('sellPrice')?.value | currency:'USD':'symbol':'1.2-2' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <p-divider></p-divider>
+                    </div>
+                    }
+                </div>
+            </div>
+    
+            <!-- Device Images Section -->
+            <div class="surface-card p-4 shadow-2 border-round mb-3">
+                <div class="text-xl font-medium mb-3">Imágenes</div>
+                <app-image-upload [maxFiles]="3" [maxFileSize]="8 * 1024 * 1024" [images]="order.devicesImages || []" (imagesChange)="devicesImages = $event">
+                </app-image-upload>
+            </div>
+    
+            <!-- Warranty Information -->
+            <div class="surface-card p-4 shadow-2 border-round mb-3">
+                <div class="text-xl font-medium mb-3">Información de Garantía</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" formGroupName="warranty">
+                    <div class="w-full">
+                        <label for="emitedOn" class="block text-900 font-medium mb-2">Fecha de Emisión</label>
+                        <p-datepicker formControlName="emitedOn" [showIcon]="true" [showOnFocus]="false"
+                            dateFormat="dd/mm/yy" styleClass="w-full" />
+                    </div>
+                    <div class="w-full">
+                        <label for="timeStamp" class="block text-900 font-medium mb-2">Fecha de Vencimiento</label>
+                        <p-datepicker formControlName="timeStamp" [showIcon]="true" [showOnFocus]="false"
+                            dateFormat="dd/mm/yy" styleClass="w-full" />
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Total Price -->
+            <div class="surface-card p-4 shadow-2 border-round">
+                <div class="flex justify-between items-center">
+                    <span class="text-xl font-medium">Total: </span>
+                    <span class="text-xl font-bold">
+                        {{ orderForm.get("totalPrice")?.value | currency:"USD":"symbol":"1.2-2" }}
+                    </span>
+                </div>
+            </div>
+    
+            <!-- Action Buttons -->
+            <div class="flex justify-end gap-2 mt-4">
+                <p-button type="button" label="Cancelar" icon="pi pi-times" severity="secondary" (onClick)="hideModal()">
+                </p-button>
+                <p-button type="submit" label="Actualizar" icon="pi pi-check" [loading]="false">
+                </p-button>
+            </div>
+        </form>
+    }
+    
+</p-dialog>

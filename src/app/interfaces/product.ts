@@ -1,18 +1,16 @@
 interface Category {
-    id: String,
-    name: String
+    id: string,
+    name: string
 }
 
 type productCategory = Omit<Category, 'id'>
 
 export interface Product {
-    id: String,
-    name: String,
-    description: String,
+    id: string,
+    name: string,
+    description: string,
     category: productCategory,
     price: number,
     stock: number,
-    imageUrl: String
+    imageUrl: string
 }
-
-export type appProduct = Omit<Product, 'id'>

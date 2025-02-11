@@ -1,16 +1,12 @@
-<section class="mx-auto flex flex-col items-center justify-evenly gap-4 md:min-h-[800px]">
+<section class="container w-full mx-auto flex flex-col items-center justify-evenly gap-4 md:min-h-[800px]">
   <!-- Primera fila - 3 cards horizontales -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <div class="h-full">
       <p-card header="Ordenes recibidas" styleClass="h-full transition-colors duration-300 ease-in-out"
         [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
-        <p class="m-0 flex-grow">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
-          numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis
-          esse, cupiditate neque quas! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Necessitatibus eveniet temporibus amet accusantium distinctio ratione dolor nisi mollitia rem eligendi
-          cupiditate nihil, deserunt accusamus repudiandae possimus quasi ullam excepturi sequi!
-        </p>
+        <div class="card flex justify-center">
+          <p-chart type="bar" [data]="ordersData" [options]="barOptions" class="w-full" />
+        </div>
       </p-card>
     </div>
 
@@ -18,7 +14,7 @@
       <p-card header="Clientes registrados" styleClass="h-full transition-colors duration-300 ease-in-out"
         [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
         <div class="card flex justify-center">
-          <p-chart type="bar" [data]="clientsData" [options]="clientsOptions" class="w-full" />
+          <p-chart type="bar" [data]="clientsData" [options]="barOptions" class="w-full" />
         </div>
       </p-card>
     </div>
@@ -26,56 +22,19 @@
     <div class="h-full">
       <p-card header="Productos" styleClass="h-full transition-colors duration-300 ease-in-out"
         [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
-        <div class="card flex justify-center">
-          <p-chart type="doughnut" [data]="productsData" [options]="productsOptions" class="w-[250px] h-auto" />
+        <div class="card flex justify-center items-center">
+          <p-chart type="doughnut" [data]="productsData" [options]="doughnutOptions" class="w-[250px] h-auto" />
         </div>
       </p-card>
     </div>
   </div>
 
-  <!-- Segunda fila - 1 card a la izquierda y 2 en columna a la derecha -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <!-- Card grande a la izquierda -->
-    <div class="h-full">
-      <p-card header="Balance económico" styleClass="h-full transition-colors duration-300 ease-in-out"
-        [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
-        <p class="m-0 flex-grow">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
-          numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis
-          esse, cupiditate neque quas! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Necessitatibus eveniet temporibus amet accusantium distinctio ratione dolor nisi mollitia rem eligendi
-          cupiditate nihil, deserunt accusamus repudiandae possimus quasi ullam excepturi sequi!
-        </p>
-      </p-card>
-    </div>
-
-    <!-- Columna derecha con 2 cards apiladas -->
-    <div class="grid grid-rows-2 gap-4 h-full">
-      <div class="h-full">
-        <p-card header="Ganancias adquiridas" styleClass="h-full transition-colors duration-300 ease-in-out"
-          [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
-          <p class="m-0 flex-grow">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
-            numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis
-            esse, cupiditate neque quas! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Necessitatibus eveniet temporibus amet accusantium distinctio ratione dolor nisi mollitia rem eligendi
-            cupiditate nihil, deserunt accusamus repudiandae possimus quasi ullam excepturi sequi!
-          </p>
-        </p-card>
+  <div class="w-full h-full">
+    <p-card header="Balance económico" styleClass="h-full transition-colors duration-300 ease-in-out"
+      [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
+      <div class="card flex justify-center items-center">
+        <p-chart type="line" [data]="economicsData" [options]="economicsOptions" class="w-full h-auto" />
       </div>
-
-      <div class="h-full">
-        <p-card header="Gastos contraídos" styleClass="h-full transition-colors duration-300 ease-in-out"
-          [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)'}">
-          <p class="m-0 flex-grow">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
-            numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis
-            esse, cupiditate neque quas! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Necessitatibus eveniet temporibus amet accusantium distinctio ratione dolor nisi mollitia rem eligendi
-            cupiditate nihil, deserunt accusamus repudiandae possimus quasi ullam excepturi sequi!
-          </p>
-        </p-card>
-      </div>
-    </div>
+    </p-card>
   </div>
 </section>

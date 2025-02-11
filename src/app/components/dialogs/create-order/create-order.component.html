@@ -1,0 +1,269 @@
+<!-- create-order.component.html -->
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '90vw', maxWidth: '768px' }" [draggable]="false"
+  [resizable]="false" header="Nueva Orden" styleClass="p-fluid" [closeOnEscape]="true" (onHide)="hideModal()">
+  <form [formGroup]="orderForm" (ngSubmit)="saveOrder()">
+    <!-- Información del Cliente -->
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+      <div class="text-xl font-medium mb-3">Información del Cliente</div>
+      <section class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
+        <!-- Opción para cliente ya registrado -->
+        <div
+          class="w-full p-2 rounded-2xl bg-white border border-1 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg hover:border-[#93c5fd]"
+          (click)="setClientType('Old')">
+          <article
+            class="w-full py-1 flex items-center justify-center gap-4 rounded-lg transition-all duration-300 ease-in-out"
+            [ngClass]="type === 'Old' ? 'bg-[#93c5fd] text-white shadow-md' : 'bg-[#f1f5f9] hover:bg-[#e2e8f0]'">
+            <i class="pi pi-user text-3xl mb-1"></i>
+            <p class="font-poppins text-lg font-normal text-center">Cliente ya registrado</p>
+          </article>
+        </div>
+
+        <!-- Opción para nuevo cliente -->
+        <div
+          class="w-full p-2 rounded-2xl bg-white border border-1 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg hover:border-[#93c5fd]"
+          (click)="setClientType('New')">
+          <article
+            class="w-full py-1 flex items-center justify-center gap-4 rounded-lg transition-all duration-300 ease-in-out"
+            [ngClass]="type === 'New' ? 'bg-[#93c5fd] text-white shadow-md' : 'bg-[#f1f5f9] hover:bg-[#e2e8f0]'">
+            <i class="pi pi-user-plus text-3xl mb-1"></i> 
+            <p class="font-poppins text-lg font-normal text-center">Nuevo cliente</p>
+          </article>
+        </div>
+      </section>
+      <div class="flex flex-col gap-4 mt-2" formGroupName="client">
+        @if(type === 'New') {
+        <p-floatlabel variant="on" class="w-full col-12 md:col-6 field mt-4">
+          <input id="name" type="text" pInputText formControlName="name" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  orderForm.get('client.name')?.invalid &&
+                  orderForm.get('client.name')?.touched
+              }" class="w-full" />
+          <label for="name" class="block text-900 font-medium mb-2">Nombre</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full col-12 md:col-6 field">
+          <input id="lastname" type="text" pInputText formControlName="lastname" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  orderForm.get('client.lastname')?.invalid &&
+                  orderForm.get('client.lastname')?.touched
+              }" class="w-full" />
+          <label for="lastname" class="block text-900 font-medium mb-2">Apellido</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full col-12 md:col-6 field">
+          <input id="ci" type="text" pInputText formControlName="ci" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  orderForm.get('client.ci')?.invalid &&
+                  orderForm.get('client.ci')?.touched
+              }" class="w-full" />
+          <label for="ci" class="block text-900 font-medium mb-2">Identificación personal</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full col-12 md:col-6 field">
+          <input id="phone" type="text" pInputText formControlName="phone" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  orderForm.get('client.phone')?.invalid &&
+                  orderForm.get('client.phone')?.touched
+              }" class="w-full" />
+          <label for="phone" class="block text-900 font-medium mb-2">Teléfono</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full col-12 md:col-6 field">
+          <input id="address" type="text" pInputText formControlName="address" [ngClass]="{
+                'ng-invalid ng-dirty':
+                  orderForm.get('client.address')?.invalid &&
+                  orderForm.get('client.address')?.touched
+              }" class="w-full" />
+          <label for="address" class="block text-900 font-medium mb-2">Dirección</label>
+        </p-floatlabel>
+
+        <div class="w-full relative">
+          <label class="absolute -top-3 left-2 z-10 px-1 bg-white text-sm text-[#838fa2]">Fecha de registro</label>
+          <p-datepicker formControlName="registeredDate" [showIcon]="true" dateFormat="dd/mm/yy" styleClass="w-full"
+            [showOnFocus]="false" />
+        </div>
+        } @else {
+        <p-select class="w-full mt-4" [options]="clientsList()" formControlName="id" optionLabel="name" optionValue="id"
+          placeholder="Seleccionar cliente" (onChange)="onClientSelected($event)" [showClear]="false" [filter]="true"
+          filterBy="name,lastname"
+          filterPlaceholder="Buscar por nombre o apellido"
+          emptyMessage="No se encontraron coincidencias">
+          <ng-template let-client pTemplate="item">
+            <div class="flex items-center">
+              <span>{{ client.name }} {{ client.lastname }}</span> <!-- Muestra nombre y apellido -->
+            </div>
+          </ng-template>
+          <ng-template let-client pTemplate="selectedItem">
+            <div class="flex items-center">
+              <span>{{ client.name }} {{ client.lastname }}</span> <!-- Muestra nombre y apellido en la selección -->
+            </div>
+          </ng-template>
+        </p-select>
+        }
+      </div>
+    </div>
+
+    <!-- Servicios -->
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+      <div class="flex justify-between items-center mb-3">
+        <div class="text-xl font-medium">Servicios</div>
+        <div class="hidden md:flex">
+          <p-button type="button" icon="pi pi-plus" label="Agregar Servicio" (onClick)="addService()"
+            severity="secondary"></p-button>
+        </div>
+        <div class="flex md:hidden">
+          <p-button type="button" icon="pi pi-plus" (onClick)="addService()" severity="secondary"></p-button>
+        </div>
+      </div>
+
+      <div formArrayName="services">
+        @for (service of services.controls; let i = $index; track i) {
+        <div [formGroupName]="i" class="mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <h1 class="font-poppins font-medium text-base">
+              Servicio no. {{ i + 1 }}
+            </h1>
+            @if (i >= 0) {
+            <p-button type="button" icon="pi pi-trash" (onClick)="removeService(i)" severity="danger" [text]="true">
+            </p-button>
+            }
+          </div>
+          <div class="flex flex-col gap-4">
+            <p-floatlabel variant="on" class="w-full col-12 md:col-6 field">
+              <input [id]="'service-' + i" type="text" pInputText formControlName="description" class="w-full" />
+              <label [for]="'service-' + i" class="block text-900 font-medium mb-2">Descripción del Servicio</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on" class="w-full col-12 md:col-6 field">
+              <p-inputNumber class="w-full" [id]="'price-' + i" formControlName="servicesPrice" mode="currency"
+                currency="USD" [minFractionDigits]="2">
+              </p-inputNumber>
+              <label [for]="'price-' + i" class="block text-900 font-medium mb-2">Precio</label>
+            </p-floatlabel>
+
+            <div class="flex flex-col gap-4">
+              <p-floatlabel variant="on">
+                <textarea pTextarea [id]="'additionalInfo-' + i" formControlName="additionalInfo" rows="5" cols="30"
+                  style="resize: none" class="h-full outline-none border-round w-full border-gray-50"></textarea>
+                <label [for]="'additionalInfo-' + i" class="block text-900 font-medium mb-2">Información
+                  adicional</label>
+              </p-floatlabel>
+            </div>
+          </div>
+          <p-divider></p-divider>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Ventas -->
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+      <div class="flex justify-between items-center mb-3">
+        <div class="text-xl font-medium">Productos Vendidos</div>
+        <div class="hidden md:flex">
+          <p-button type="button" icon="pi pi-plus" label="Agregar Venta" (onClick)="addSell()"
+            severity="secondary"></p-button>
+        </div>
+        <div class="flex md:hidden">
+          <p-button type="button" icon="pi pi-plus" (onClick)="addSell()" severity="secondary"></p-button>
+        </div>
+      </div>
+
+      <div formArrayName="sells">
+        @for (sell of sells.controls; let sellIndex = $index; track sellIndex) {
+        <div [formGroupName]="sellIndex" class="mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <h1 class="font-poppins font-medium text-base">
+              Venta no. {{ sellIndex + 1 }}
+            </h1>
+            @if (sellIndex >= 0) {
+            <p-button type="button" icon="pi pi-trash" (onClick)="removeSell(sellIndex)" severity="danger"
+              [text]="true">
+            </p-button>
+            }
+          </div>
+
+          <div class="w-full mt-3 flex items-center justify-between">
+            <label class="block text-900 font-medium mb-2">Precio de Venta:</label>
+            <p-inputNumber [id]="'sellPrice-' + sellIndex" formControlName="sellPrice" mode="currency" currency="USD"
+              [minFractionDigits]="2" [readonly]="true">
+            </p-inputNumber>
+          </div>
+
+          <div formArrayName="products" class="w-full mt-3">
+            @for (product of getProducts(sellIndex).controls; let productIndex = $index; track productIndex) {
+            <div [formGroupName]="productIndex" class="w-full flex gap-2 items-center justify-center">
+              <p-select class="w-full mt-2" [options]="productsList()" formControlName="id" optionLabel="name"
+                optionValue="id" placeholder="Seleccionar producto"
+                (onChange)="onProductSelected(sellIndex, productIndex)" [showClear]="false" [filter]="true"
+                filterBy="name" filterPlaceholder="Introduzca nombre del producto"
+                emptyMessage="No se encontraron coincidencias">
+              </p-select>
+
+              <p-inputNumber class="mt-2" formControlName="price" mode="currency" currency="USD" [minFractionDigits]="2"
+                [readonly]="true">
+              </p-inputNumber>
+
+              <button type="button" pButton icon="pi pi-trash" class="p-button-text p-button-danger mt-2"
+                (click)="removeProduct(sellIndex, productIndex)"></button>
+            </div>
+            }
+          </div>
+
+          <div class="flex justify-between align-center mt-3">
+            <p-button type="button" icon="pi pi-plus" label="Agregar Producto" (onClick)="addProduct(sellIndex)"
+              severity="secondary" [text]="true">
+            </p-button>
+          </div>
+          <p-divider></p-divider>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Imágenes -->
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+      <div class="text-xl font-medium mb-3">Imágenes</div>
+      <app-image-upload
+        [maxFiles]="3"
+        [maxFileSize]="8 * 1024 * 1024"
+        (imagesChange)="devicesImages = $event">
+      </app-image-upload>
+    </div>
+
+    <!-- Información de Garantía -->
+    <div class="surface-card p-4 shadow-2 border-round mb-3">
+      <div class="text-xl font-medium mb-3">Información de Garantía</div>
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-3" formGroupName="warranty">
+        <div class="w-full">
+          <label for="emitedOn" class="block text-900 font-medium mb-2">Fecha de Emisión</label>
+          <p-datepicker formControlName="emitedOn" [showIcon]="true" inputId="emitedOn" [showOnFocus]="false"
+            dateFormat="dd/mm/yy" styleClass="w-full" />
+        </div>
+        <div class="w-full">
+          <label for="timeStamp" class="block text-900 font-medium mb-2">Fecha de Vencimiento</label>
+          <p-datepicker formControlName="timeStamp" [showIcon]="true" inputId="timeStamp" [showOnFocus]="false"
+            dateFormat="dd/mm/yy" styleClass="w-full" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="surface-card p-4 shadow-2 border-round">
+      <div class="flex justify-between align-center">
+        <span class="text-xl font-medium">Total: </span>
+        <span class="text-xl font-bold">{{
+          orderForm.get("totalPrice")?.value
+          | currency : "USD" : "symbol" : "1.2-2"
+          }}</span>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button type="button" label="Cancelar" icon="pi pi-times" severity="secondary" (onClick)="hideModal()">
+      </p-button>
+      <p-button type="submit" label="Guardar" icon="pi pi-check" [loading]="false">
+      </p-button>
+    </div>
+  </form>
+</p-dialog>

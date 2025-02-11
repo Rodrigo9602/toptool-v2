@@ -1,0 +1,13 @@
+/* En tu archivo de estilos del componente */
+::ng-deep .p-datepicker {
+    width: 100%;
+}
+
+::ng-deep .p-datepicker .p-inputtext {
+    width: 100%;
+    flex-grow: 1;
+}
+
+::ng-deep .p-datepicker-trigger {
+    margin-left: auto;
+}

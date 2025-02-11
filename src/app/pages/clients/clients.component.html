@@ -1,1 +1,96 @@
-<p>clients works!</p>
+<div class="w-full hidden md:block p-4 bg-[var(--primary-color)] text-[var(--secondary-color)]">
+    <!-- Header con búsqueda y botón de añadir -->
+    <div
+        class="flex flex-col md:flex-row justify-between gap-4 items-center mb-6 p-6 bg-[var(--hover-primary-color)] shadow-sm rounded-lg">
+        <!-- Campo de búsqueda mejorado -->
+        <div class="w-full md:w-96">
+            <span class="p-input-icon-left">
+                <input type="text" pInputText [(ngModel)]="searchText" (ngModelChange)="onSearch()"
+                    placeholder="Buscar por nombre, apellidos o ci..." class="w-full p-3 
+            bg-[var(--secondary-color)] 
+            text-[var(--primary-color)] 
+            border border-[var(--hover-secondary-color)] 
+            focus:border-[var(--hover-primary-color)]" />
+            </span>
+        </div>
+
+        <button pButton type="button" icon="pi pi-plus" label="Nuevo Cliente" class="p-3 rounded-md outline-none cursor-pointer bg-[var(--primary-color)] text-[var(--secondary-color)] hover:bg-[var(--hover-primary-color)] 
+        active:bg-[var(--active-primary-color)] w-full md:w-auto" (click)="addClient()"></button>
+    </div>
+
+    <!-- Tabla de órdenes mejorada -->
+    <div class="bg-[var(--hover-primary-color)] rounded-2xl shadow-sm">
+        <p-table [value]="filteredClients" [loading]="loading" [paginator]="true" [rows]="rows"
+            [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadClients($event)"
+            [rowsPerPageOptions]="[5, 10, 25, 50]" styleClass="p-datatable-striped" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} órdenes" [rowHover]="true">
+            <ng-template pTemplate="header">
+                <tr class="bg-[var(--hover-secondary-color)]">
+                    <th class="text-sm font-semibold">ID</th>
+                    <th class="text-sm font-semibold">Nombre completo</th>
+                    <th class="text-sm font-semibold">Dirección particular</th>
+                    <th class="text-sm font-semibold">Teléfono</th>
+                    <th class="text-sm font-semibold text-center">Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-client>
+                <tr>
+                    <td class="text-sm">{{ client.ci }}</td>
+                    <td class="text-sm font-medium">
+                        {{ client.name }} {{ client.lastname }}
+                    </td>
+                    <td class="text-sm font-medium">
+                        {{client.address}}
+                    </td>
+                    <td class="text-sm font-medium">
+                        {{client.phone}}
+                    </td>
+                    <td>
+                        <div class="flex justify-center">
+                            <button pButton type="button" icon="pi pi-ellipsis-v" (click)="showMenu($event, client)"
+                                class="p-button-text p-button-rounded"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+
+
+            @if (loading) {
+            <div class="p-6">
+                <!-- Skeleton para el encabezado de la tabla -->
+                <div class="flex gap-4 mb-4">
+                    @for (_ of [1, 2, 3, 4, 5]; track $index) {
+                    <p-skeleton width="100%" height="2rem"></p-skeleton>
+                    }
+                </div>
+
+                <!-- Skeleton para las filas de la tabla -->
+                @for (_ of [1, 2, 3, 4, 5]; track $index) {
+                <div class="flex gap-4 mb-4">
+                    @for (_ of [1, 2, 3, 4, 5]; track $index) {
+                    <p-skeleton width="100%" height="3rem"></p-skeleton>
+                    }
+                </div>
+                }
+            </div>
+            }
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6" class="text-center p-6">
+                        <div class="flex flex-col items-center gap-1">
+                            <i class="pi pi-inbox text-4xl text-gray-400"></i>
+                            <span class="text-gray-500">No se encontraron clientes</span>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<!-- Menú contextual -->
+<p-menu #menu [popup]="true" [model]="contextMenuItems" [appendTo]="'body'"></p-menu>
+<!-- Modal para confirmar eliminación de la orden-->
+<app-proccess-delete [(visible)]="showConfirmDeleteModal" (onDelete)="onDeleteConfirm()" />

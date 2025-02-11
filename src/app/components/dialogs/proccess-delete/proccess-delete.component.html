@@ -1,0 +1,17 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{width: '90vw', maxWidth: '500px'}" [draggable]="false"
+    [resizable]="false" header="Confirmar eliminación" styleClass="p-fluid" [closeOnEscape]="true"
+    (onHide)="hideModal()">
+
+    <section class="w-full flex flex-col items-center justify-center gap-2">
+        <h1 class="font-poppins font-medium text-[18px]">Esta acción es irreversible</h1>
+        <p class="font-poppins text-base font-normal text-[#9D9D9D]">Desea continuar?</p>
+        <p-divider />
+        <div class="w-full flex items-center justify-end gap-2">
+            <p-button type="button" label="Aceptar" (onClick)="onClose(true)" severity="primary" raised="true" size="large"></p-button>
+            <p-button type="button" label="Cancelar" (onClick)="onClose(false)" severity="secondary" raised="true" size="large"></p-button>
+        </div>
+    </section>
+
+
+
+</p-dialog>

@@ -1,5 +1,5 @@
 export interface Warranty {
-    id: String,
+    id: string,
     emitedOn: Date,
     timeStamp: Date,
 }
